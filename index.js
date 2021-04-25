@@ -42,17 +42,21 @@ express()
   .get('/', (req, res) => res.render('pages/index'))
   .post('/welcome', (req, res) => {
     console.log(req.body);
-    client.messages
-      .create({
-        body: waMessageBody,
-        from: 'whatsapp:+14155238886',
-        to: `whatsapp:${req.body.phoneNumber}`
-      })
-      .then(message => {
-        console.log(message.sid)
-        res.send(`Message sent to ${JSON.stringify(message)}`)
-      }
-      )
-      .done();
+    if (req.body.Body.toLower() == "help") {
+      client.messages
+        .create({
+          body: waMessageBody,
+          from: 'whatsapp:+14155238886',
+          to: `whatsapp:+${req.body.WaId}`
+        })
+        .then(message => {
+          console.log(message.sid)
+          res.send(`Message sent to ${JSON.stringify(message)}`)
+        }
+        )
+        .done();
+    } else {
+      res.send(`Wrong start message`)
+    }
   })
   .listen(PORT, () => console.log(`Listening on ${PORT}`))
