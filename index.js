@@ -34,27 +34,27 @@ const template = {
   attenderRelationToPatient: "Attender relation to patient"
 }
 const waMessageBody = `Please keep such a whatsapp message filled out and handy. \n
-1. ${template.patientName}:\n
-2. ${template.srfId}:\n
-3. ${template.buNumber}:\n
-4. ${template.age}:\n
-5. ${template.gender}:\n
-6. ${template.wardName}:\n
-7. ${template.area}:\n
-8. ${template.covidTestDone}?:\n
-9. ${template.positiveDate}:\n
-10. ${template.covidResult}:\n
-11. ${template.dateOfFirstSymptom}:\n
-12. ${template.spo2Level}:\n
-13. ${template.coMorbidities}:\n
-14. ${template.symptomsNow}:\n
-15. ${template.isPatientOnOxygenCylinderNow}:\n
-16. ${template.bedRequired}:\n
-17. ${template.searchingHospitalBedSince}:\n
-18. ${template.hospitalsVisited}:\n
-19. ${template.preferredHospital}:\n
-20. ${template.attenderMobileNumber}:\n
-21. ${template.attenderRelationToPatient}:\n
+1. ${template.patientName}:
+2. ${template.srfId}:
+3. ${template.buNumber}:
+4. ${template.age}:
+5. ${template.gender}:
+6. ${template.wardName}:
+7. ${template.area}:
+8. ${template.covidTestDone}?:
+9. ${template.positiveDate}:
+10. ${template.covidResult}:
+11. ${template.dateOfFirstSymptom}:
+12. ${template.spo2Level}:
+13. ${template.coMorbidities}:
+14. ${template.symptomsNow}:
+15. ${template.isPatientOnOxygenCylinderNow}:
+16. ${template.bedRequired}:
+17. ${template.searchingHospitalBedSince}:
+18. ${template.hospitalsVisited}:
+19. ${template.preferredHospital}:
+20. ${template.attenderMobileNumber}:
+21. ${template.attenderRelationToPatient}:
 \n
 NOTE : Keep the attender mobile free for hospital / BBMP call about beds.yes we will try.`
 
@@ -91,7 +91,6 @@ express()
 
 function parseMessage(messageBody) {
   const messages = messageBody.split('\n');
-  console.log(Object.keys(messageBody))
   const messageValue = {
     patientName: messages[2].split(`${template.patientName}:`)[1],
     srfId: messages[3].split(`${template.srfId}:`)[1],
