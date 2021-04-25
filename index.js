@@ -66,7 +66,7 @@ express()
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('pages/index'))
   .post('/welcome', (req, res) => {
-    // console.log(req.body);
+    console.log(req.body.Body);
     if (req.body.Body.toLowerCase() == "help") {
       client.messages
         .create({
@@ -91,6 +91,7 @@ express()
 
 function parseMessage(messageBody) {
   const messages = messageBody.split('\n');
+  console.log(Object.keys(messageBody))
   const messageValue = {
     patientName: messages[2].split(`${template.patientName}:`)[1],
     srfId: messages[3].split(`${template.srfId}:`)[1]
