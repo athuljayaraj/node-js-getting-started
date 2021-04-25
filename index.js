@@ -42,7 +42,7 @@ express()
   .get('/', (req, res) => res.render('pages/index'))
   .post('/welcome', (req, res) => {
     console.log(req.body);
-    if (req.body.Body.toLower() == "help") {
+    if (req.body.Body.toLowerCase() == "help") {
       client.messages
         .create({
           body: waMessageBody,
