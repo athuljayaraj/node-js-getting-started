@@ -29,7 +29,7 @@ const template = {
   bedRequired: "What kind of bed is required - ICU, ICU with ventilator?",
   searchingHospitalBedSince: "Searching Hospital Bed Since",
   hospitalsVisited: "List of Hospitals Visited",
-  preferredHospital: "Preferred Hospital",
+  preferredHospital: "Preferred Hospital? Pvt / Govt",
   attenderMobileNumber: "Attender Mobile No",
   attenderRelationToPatient: "Attender relation to patient"
 }
@@ -94,7 +94,26 @@ function parseMessage(messageBody) {
   console.log(Object.keys(messageBody))
   const messageValue = {
     patientName: messages[2].split(`${template.patientName}:`)[1],
-    srfId: messages[3].split(`${template.srfId}:`)[1]
+    srfId: messages[3].split(`${template.srfId}:`)[1],
+    buNumber: messages[4].split(`${template.buNumber}:`)[1],
+    age: messages[5].split(`${template.age}:`)[1],
+    gender: messages[6].split(`${template.gender}:`)[1],
+    wardName: messages[7].split(`${template.wardName}:`)[1],
+    area: messages[8].split(`${template.area}:`)[1],
+    covidTestDone: messages[9].split(`${template.covidTestDone}:`)[1],
+    positiveDate: messages[10].split(`${template.positiveDate}:`)[1],
+    covidResult: messages[11].split(`${template.covidResult}:`)[1],
+    dateOfFirstSymptom: messages[12].split(`${template.dateOfFirstSymptom}:`)[1],
+    spo2Level: messages[13].split(`${template.spo2Level}:`)[1],
+    coMorbidities: messages[14].split(`${template.coMorbidities}:`)[1],
+    symptomsNow: messages[15].split(`${template.symptomsNow}:`)[1],
+    isPatientOnOxygenCylinderNow: messages[16].split(`${template.isPatientOnOxygenCylinderNow}:`)[1],
+    bedRequired: messages[17].split(`${template.bedRequired}:`)[1],
+    searchingHospitalBedSince: messages[18].split(`${template.searchingHospitalBedSince}:`)[1],
+    hospitalsVisited: messages[19].split(`${template.hospitalsVisited}:`)[1],
+    preferredHospital: messages[20].split(`${template.preferredHospital}:`)[1],
+    attenderMobileNumber: messages[21].split(`${template.attenderMobileNumber}:`)[1],
+    attenderRelationToPatient: messages[22].split(`${template.attenderRelationToPatient}:`)[1],
   }
 
   return messageValue;
