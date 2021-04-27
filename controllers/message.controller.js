@@ -1,5 +1,5 @@
 
-const https = require('https')
+const { https } = require('follow-redirects');
 const env = require('dotenv').config()
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
@@ -71,18 +71,20 @@ function writeToSheet(message, whatsappId) {
     }
   }
 
+  let responseData = []
   const req = https.request(options, res => {
     console.log(`statusCode: ${res.statusCode}`)
-    res.on('data', responseData => {
+    res.on('data', (chunk) => {
+      responseData.push(chunk);
+    }).on('end', () => {
+      responseData = Buffer.concat(responseData).toString();
       console.log(responseData);
-      const to = responseData.to;
-      const question = template[responseData.questionNumber];
-      process.stdout.write(responseData)
-      process.stdout.write("Send next message to phone")
-      sendWaMessage(to, question, (message) => {
-        console.log(message.sid)
-        res.send(`Message sent to ${JSON.stringify(message)}`)
-      })
+      responseData = JSON.parse(responseData);
+      const to = responseData.whatsappId;
+      const nextQuestionNumber = responseData.nextQuestion.charCodeAt() - 'A'.charCodeAt() - 3;
+      sendQuestionMessage(to, nextQuestionNumber)
+      console.log(`Sending next message to phone ${to}`)
+
     })
   })
 
