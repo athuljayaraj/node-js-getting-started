@@ -90,7 +90,7 @@ function writeToSheet(message, whatsappId) {
         console.log(`Sending next message to phone ${to}`)
       } else {
         sendWaMessage(to, thanksMessage, (message) => {
-          console.log(`Message ${question} sent to whatsapp ID: ${to}`)
+          console.log(`Message ${thanksMessage} sent to whatsapp ID: ${to}`)
         })
       }
 
