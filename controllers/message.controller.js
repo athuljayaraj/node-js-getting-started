@@ -34,7 +34,7 @@ const template = {
 const welcomeMessage = "We're here to help. Answer the upcoming messages one by one."
 
 exports.welcome = (req, res) => {
-  console.log(req.body.Body);
+  console.log(req.body.Body, req.body.WaId);
   if (req.body.Body.toLowerCase() == "help") {
     sendWaMessage(req.body.WaId, welcomeMessage, (message) => {
       console.log(`Welcome message sent to ${req.body.WaId}`)
@@ -42,7 +42,7 @@ exports.welcome = (req, res) => {
       sendQuestionMessage(req.body.WaId);
     })
   } else {
-    writeToSheet(req.body.Body, req.body.WaId);
+    writeToSheet(req.body.Body, `+${req.body.WaId}`);
     res.send(`Message wrote to sheet`)
   }
 };
