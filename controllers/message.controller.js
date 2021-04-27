@@ -32,6 +32,7 @@ const template = {
 }
 
 const welcomeMessage = "We're here to help. Answer the upcoming messages one by one."
+const thanksMessage = "Please stay safe. Our volunteers will get in touch with you immediately."
 
 exports.welcome = (req, res) => {
   console.log(req.body.Body, req.body.WaId);
@@ -49,9 +50,11 @@ exports.welcome = (req, res) => {
 
 function sendQuestionMessage(whatsappId, questionNumber = 0) {
   const question = Object.values(template)[questionNumber];
-  sendWaMessage(whatsappId, question, (message) => {
-    console.log(`Question ${question} sent to whatsapp ID: ${whatsappId}`)
-  })
+  if (question) {
+    sendWaMessage(whatsappId, question, (message) => {
+      console.log(`Question ${question} sent to whatsapp ID: ${whatsappId}`)
+    })
+  }
 }
 
 function writeToSheet(message, whatsappId) {
@@ -81,9 +84,15 @@ function writeToSheet(message, whatsappId) {
       console.log(responseData);
       responseData = JSON.parse(responseData);
       const to = responseData.whatsappId;
-      const nextQuestionNumber = responseData.nextQuestion.charCodeAt() - 'A'.charCodeAt() - 3;
-      sendQuestionMessage(to, nextQuestionNumber)
-      console.log(`Sending next message to phone ${to}`)
+      if (responseData.nextQuestion) {
+        const nextQuestionNumber = responseData.nextQuestion.charCodeAt() - 'A'.charCodeAt() - 3;
+        sendQuestionMessage(to, nextQuestionNumber)
+        console.log(`Sending next message to phone ${to}`)
+      } else {
+        sendWaMessage(to, thanksMessage, (message) => {
+          console.log(`Message ${question} sent to whatsapp ID: ${to}`)
+        })
+      }
 
     })
   })
