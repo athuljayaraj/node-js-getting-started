@@ -74,9 +74,10 @@ function writeToSheet(message, whatsappId) {
   const req = https.request(options, res => {
     console.log(`statusCode: ${res.statusCode}`)
     res.on('data', responseData => {
+      console.log(responseData);
       const to = responseData.to;
-      const question = template[d.questionNumber];
-      process.stdout.write(d)
+      const question = template[responseData.questionNumber];
+      process.stdout.write(responseData)
       process.stdout.write("Send next message to phone")
       sendWaMessage(to, question, (message) => {
         console.log(message.sid)
