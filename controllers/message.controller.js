@@ -11,14 +11,14 @@ const template = {
   patientName: "Patient Name",
   srfId: "SRF ID",
   buNumber: "BU Number",
-  age: "Age",
-  gender: "Gender",
+  age: "Age(in Years)",
+  gender: "Gender(Male/Female)",
   wardName: "Ward Name",
   area: "Area",
-  covidTestDone: "Covid Test Done?",
-  positiveDate: "Postive Date",
-  covidResult: "Covid Result",
-  dateOfFirstSymptom: "Date of first symptom",
+  covidTestDone: "Covid Test Done? (Y/N)",
+  covidResult: "Covid Result (+/-)",
+  positiveDate: "Date of last Covid+ result (dd/mm/yyyy)",
+  dateOfFirstSymptom: "Date of first symptom (dd/mm/yyyy)",
   spo2Level: "SPO2 Level (Saturation)",
   coMorbidities: "Co-morbidities",
   symptomsNow: "Symptoms now",
@@ -32,7 +32,8 @@ const template = {
 }
 
 const welcomeMessage = "We're here to help. Answer the upcoming messages one by one."
-const thanksMessage = "Please stay safe. Our volunteers will get in touch with you immediately."
+const confirmRecap = "Please verify the below details. If incorrect, please type 'help' to resubmit the details.\n"
+const thanksMessage = "Stay safe and strong. Our volunteers will get in touch with you immediately."
 
 exports.welcome = (req, res) => {
   console.log(req.body.Body, req.body.WaId);
@@ -57,10 +58,11 @@ function sendQuestionMessage(whatsappId, questionNumber = 0) {
   }
 }
 
-function writeToSheet(message, whatsappId) {
+function writeToSheet(message, whatsappId, newMessage = false) {
   const data = JSON.stringify({
     message,
-    whatsappId
+    whatsappId,
+    newMessage
   })
   console.log(data);
   const options = {
@@ -88,12 +90,12 @@ function writeToSheet(message, whatsappId) {
         const nextQuestionNumber = responseData.nextQuestion.charCodeAt() - 'A'.charCodeAt() - 3;
         sendQuestionMessage(to, nextQuestionNumber)
         console.log(`Sending next message to phone ${to}`)
-      } else {
-        sendWaMessage(to, thanksMessage, (message) => {
-          console.log(`Message ${thanksMessage} sent to whatsapp ID: ${to}`)
+      } else if (responseData.recap) {
+        const recapMessage = buildRecapMessage(responseData.recap)
+        sendWaMessage(to, recapMessage, (message) => {
+          console.log(`Recap sent to whatsapp ID: ${to}`)
         })
       }
-
     })
   })
 
@@ -113,4 +115,15 @@ function sendWaMessage(to, message, callback) {
       to: `whatsapp:${to}`
     }).then(message => callback(message)).done();
 
+}
+
+function buildRecapMessage(recap) {
+  console.log(recap)
+  let recapMessage = confirmRecap + '\n';
+  const keys = Object.keys(template);
+  for (i = 0; i < keys.length; i++) {
+    recapMessage = recapMessage + `${template[keys[i]]}: ${recap[i + 3]}\n`
+  }
+  recapMessage = recapMessage + `\n${thanksMessage}`;
+  return recapMessage;
 }
