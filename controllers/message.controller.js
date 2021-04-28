@@ -42,9 +42,10 @@ exports.welcome = (req, res) => {
       console.log(`Welcome message sent to ${req.body.WaId}`)
       res.send(`Message sent to ${JSON.stringify(req.body.WaId)}`)
       sendQuestionMessage(`+${req.body.WaId}`);
+      writeToSheet(req.body.WaId, "", true)
     })
   } else {
-    writeToSheet(req.body.Body, req.body.WaId);
+    writeToSheet(req.body.WaId, req.body.Body);
     res.send(`Message wrote to sheet`)
   }
 };
@@ -58,7 +59,7 @@ function sendQuestionMessage(whatsappId, questionNumber = 0) {
   }
 }
 
-function writeToSheet(message, whatsappId, newMessage = false) {
+function writeToSheet(whatsappId, message, newMessage = false) {
   const data = JSON.stringify({
     message,
     whatsappId,
